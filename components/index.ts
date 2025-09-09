@@ -1,0 +1,9 @@
+export { Navbar } from "./navbar";
+export { Hero } from "./hero";
+export { SecondaryHero } from "./secondary-hero";
+export { AboutSection } from "./about-section";
+export { Gallery } from "./gallery";
+export { Footer } from "./footer";
+export { DeliverySection } from "./delivery-section";
+export { LunchMenuSection } from "./lunch-menu-section";
+export { LocationSection } from "./location-section";
