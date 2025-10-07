@@ -1,9 +1,12 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { SketchButton } from "@/components/ui/sketch-button";
+import { ReservationModal } from "@/components/reservation-modal";
 
 export const Footer = () => {
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
   return (
     <footer className="bg-black text-white border-t border-gray-800">
       <div className="container mx-auto px-4 py-8">
@@ -163,7 +166,10 @@ export const Footer = () => {
             </div>
 
             <div className="mt-6">
-              <SketchButton className="w-full py-2 font-semibold text-sm">
+              <SketchButton
+                className="w-full py-2 font-semibold text-sm"
+                onClick={() => setIsReservationModalOpen(true)}
+              >
                 Направи резервация
               </SketchButton>
             </div>
@@ -199,6 +205,12 @@ export const Footer = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Reservation Modal */}
+      <ReservationModal
+        isOpen={isReservationModalOpen}
+        onClose={() => setIsReservationModalOpen(false)}
+      />
     </footer>
   );
 };

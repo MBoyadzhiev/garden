@@ -5,6 +5,7 @@ import { SketchButton } from "@/components/ui/sketch-button";
 // Type definitions for Leaflet
 interface LeafletMap {
   setView: (latlng: [number, number], zoom: number) => LeafletMap;
+  remove: () => void;
 }
 
 interface LeafletTileLayer {
@@ -55,11 +56,24 @@ declare global {
 
 export const LocationSection = () => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<LeafletMap | null>(null);
+  const isMapLoadedRef = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple initializations
+    if (isMapLoadedRef.current || !mapRef.current) {
+      return;
+    }
+
     // Load Leaflet (OpenStreetMap) - No API key required!
     const loadLeafletMap = () => {
-      if (mapRef.current) {
+      if (mapRef.current && !isMapLoadedRef.current) {
+        // Check if Leaflet is already loaded
+        if (window.L) {
+          initializeMap();
+          return;
+        }
+
         // Load Leaflet CSS
         const link = document.createElement("link");
         link.rel = "stylesheet";
@@ -75,73 +89,107 @@ export const LocationSection = () => {
           "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=";
         script.crossOrigin = "";
         script.onload = () => {
-          // Initialize map
-          const map = window.L.map(mapRef.current!).setView(
-            [42.49437370477089, 27.475594753681918],
-            16
-          );
-
-          // Add OpenStreetMap tiles
-          window.L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution:
-              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          }).addTo(map);
-
-          // Create custom marker icon
-          const customIcon = window.L.divIcon({
-            html: `
-              <div style="
-                width: 40px;
-                height: 40px;
-                background: #a8a29e;
-                border: 2px solid #ffffff;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-              ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-              </div>
-            `,
-            className: "custom-marker",
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-          });
-
-          // Add marker
-          const marker = window.L.marker(
-            [42.49437370477089, 27.475594753681918],
-            {
-              icon: customIcon,
-            }
-          ).addTo(map);
-
-          // Add popup
-          marker.bindPopup(`
-            <div style="padding: 10px; max-width: 200px;">
-              <h3 style="margin: 0 0 8px 0; color: #1f2937; font-size: 16px; font-weight: 600;">Garden Bogoridi</h3>
-              <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">Ресторант с градина</p>
-              <p style="margin: 0; color: #374151; font-size: 14px;">ул. Антим I 32, Бургас</p>
-            </div>
-          `);
-
-          // Open popup by default
-          marker.openPopup();
+          initializeMap();
         };
         document.head.appendChild(script);
       }
     };
 
+    const initializeMap = () => {
+      if (!mapRef.current || isMapLoadedRef.current || !window.L) {
+        return;
+      }
+
+      try {
+        // Clear any existing content in the map container
+        if (mapRef.current.hasChildNodes()) {
+          mapRef.current.innerHTML = "";
+        }
+
+        // Initialize map
+        const map = window.L.map(mapRef.current).setView(
+          [42.49437370477089, 27.475594753681918],
+          16
+        );
+
+        // Store map instance for cleanup
+        mapInstanceRef.current = map;
+        isMapLoadedRef.current = true;
+
+        // Add OpenStreetMap tiles
+        window.L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(map);
+
+        // Create custom marker icon
+        const customIcon = window.L.divIcon({
+          html: `
+            <div style="
+              width: 40px;
+              height: 40px;
+              background: #a8a29e;
+              border: 2px solid #ffffff;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            ">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+            </div>
+          `,
+          className: "custom-marker",
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
+        });
+
+        // Add marker
+        const marker = window.L.marker(
+          [42.49437370477089, 27.475594753681918],
+          {
+            icon: customIcon,
+          }
+        ).addTo(map);
+
+        // Add popup
+        marker.bindPopup(`
+          <div style="padding: 10px; max-width: 200px;">
+            <h3 style="margin: 0 0 8px 0; color: #1f2937; font-size: 16px; font-weight: 600;">Garden Bogoridi</h3>
+            <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">Ресторант с градина</p>
+            <p style="margin: 0; color: #374151; font-size: 14px;">ул. Антим I 32, Бургас</p>
+          </div>
+        `);
+
+        // Open popup by default
+        marker.openPopup();
+      } catch (error) {
+        console.error("Error initializing map:", error);
+      }
+    };
+
     // Load the map
     loadLeafletMap();
+
+    // Cleanup function
+    return () => {
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (error) {
+          console.error("Error removing map:", error);
+        }
+        mapInstanceRef.current = null;
+        isMapLoadedRef.current = false;
+      }
+    };
   }, []);
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-white py-24">
+    <section className="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-50 py-24">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">

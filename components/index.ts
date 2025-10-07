@@ -7,3 +7,4 @@ export { Footer } from "./footer";
 export { DeliverySection } from "./delivery-section";
 export { LunchMenuSection } from "./lunch-menu-section";
 export { LocationSection } from "./location-section";
+export { ReservationModal } from "./reservation-modal";

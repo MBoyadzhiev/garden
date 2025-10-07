@@ -56,15 +56,23 @@ export const Hero = () => {
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                  <a href="/menu">
-                    <SketchButton className="px-8 py-4 text-lg font-semibold">
+                <div className="flex flex-col sm:flex-row gap-4 pt-6 items-center sm:items-start">
+                  <a href="/menu" className="w-full sm:w-auto max-w-xs">
+                    <SketchButton
+                      className="w-full py-4 text-lg font-semibold"
+                      style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
+                    >
                       Разгледай менюто
                     </SketchButton>
                   </a>
-                  <SketchButton className="px-8 py-4 text-lg font-semibold">
-                    Направи резервация
-                  </SketchButton>
+                  <div className="w-full sm:w-auto max-w-xs">
+                    <SketchButton
+                      className="w-full py-4 text-lg font-semibold"
+                      style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
+                    >
+                      Направи резервация
+                    </SketchButton>
+                  </div>
                 </div>
               </motion.div>
 
