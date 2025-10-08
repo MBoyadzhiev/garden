@@ -55,44 +55,49 @@ export const ReservationModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 backdrop-blur-md bg-black/50 p-4 overflow-y-auto"
+          className="fixed inset-0 backdrop-blur-md bg-black/50 p-2 sm:p-4 overflow-y-auto"
           style={{ zIndex: 9999 }}
           onClick={onClose}
         >
-          <div className="min-h-full flex items-center justify-center">
+          <div className="min-h-full flex items-center justify-center py-4 sm:py-8">
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+              className="relative bg-white rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-md overflow-hidden my-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="bg-gradient-to-r from-gray-700 to-stone-700 px-6 py-4 text-white">
+              <div className="bg-gradient-to-r from-gray-700 to-stone-700 px-4 sm:px-6 py-3 sm:py-4 text-white">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold">Направи резервация</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold">
+                    Направи резервация
+                  </h3>
                   <button
                     onClick={onClose}
                     className="text-white/80 hover:text-white transition-colors p-1"
                   >
-                    <IconX className="w-5 h-5" />
+                    <IconX className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                 </div>
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <form
+                onSubmit={handleSubmit}
+                className="p-4 sm:p-6 space-y-4 sm:space-y-6"
+              >
                 {/* Name Field */}
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                   >
                     Име *
                   </label>
                   <div className="relative">
-                    <IconUser className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <IconUser className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                     <input
                       type="text"
                       id="name"
@@ -100,7 +105,7 @@ export const ReservationModal = ({
                       required
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
+                      className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
                       placeholder="Вашето име"
                     />
                   </div>
@@ -110,12 +115,12 @@ export const ReservationModal = ({
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                   >
                     Телефон *
                   </label>
                   <div className="relative">
-                    <IconPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <IconPhone className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                     <input
                       type="tel"
                       id="phone"
@@ -123,24 +128,24 @@ export const ReservationModal = ({
                       required
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
+                      className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
                       placeholder="+359 87 123 4567"
                     />
                   </div>
                 </div>
 
                 {/* Date and Time Row */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {/* Date Field */}
                   <div>
                     <label
                       htmlFor="date"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                     >
                       Дата *
                     </label>
                     <div className="relative">
-                      <IconCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <IconCalendar className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                       <input
                         type="date"
                         id="date"
@@ -149,7 +154,7 @@ export const ReservationModal = ({
                         value={formData.date}
                         onChange={handleInputChange}
                         min={new Date().toISOString().split("T")[0]}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
+                        className="w-full pl-8 sm:pl-10 pr-2 sm:pr-4 py-2.5 sm:py-3 text-xs sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
                       />
                     </div>
                   </div>
@@ -158,12 +163,12 @@ export const ReservationModal = ({
                   <div>
                     <label
                       htmlFor="time"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                     >
                       Час *
                     </label>
                     <div className="relative">
-                      <IconClock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <IconClock className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                       <input
                         type="time"
                         id="time"
@@ -171,7 +176,7 @@ export const ReservationModal = ({
                         required
                         value={formData.time}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
+                        className="w-full pl-8 sm:pl-10 pr-2 sm:pr-4 py-2.5 sm:py-3 text-xs sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
                       />
                     </div>
                   </div>
@@ -181,7 +186,7 @@ export const ReservationModal = ({
                 <div>
                   <label
                     htmlFor="guests"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                   >
                     Брой гости *
                   </label>
@@ -190,7 +195,7 @@ export const ReservationModal = ({
                     name="guests"
                     value={formData.guests}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
                   >
                     <option value="1">1 човек</option>
                     <option value="2">2 души</option>
@@ -206,13 +211,13 @@ export const ReservationModal = ({
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-gray-700 to-stone-700 text-white py-3 px-6 rounded-lg font-semibold hover:from-gray-800 hover:to-stone-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="w-full bg-gradient-to-r from-gray-700 to-stone-700 text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base font-semibold hover:from-gray-800 hover:to-stone-800 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   Изпрати резервация
                 </button>
 
                 {/* Note */}
-                <p className="text-sm text-gray-600 text-center">
+                <p className="text-xs sm:text-sm text-gray-600 text-center">
                   Ще се свържем с вас за потвърждение на резервацията
                 </p>
               </form>

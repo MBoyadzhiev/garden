@@ -31,6 +31,7 @@ export const Navbar = () => {
 
   const menuItems = [
     { name: "Меню", href: "/menu" },
+    { name: "Поръчай", href: "/orders" },
     { name: "За нас", href: "#about" },
     { name: "Кетъринг", href: "#catering" },
     // { name: "Резервации", href: "#reservations" },
@@ -107,7 +108,7 @@ export const Navbar = () => {
               className="hidden md:flex items-center space-x-4 mr-16"
               style={{ pointerEvents: "auto" }}
             >
-              <a href="#delivery">
+              <a href="/orders">
                 <SketchButton>Поръчай</SketchButton>
               </a>
               <button
@@ -190,7 +191,7 @@ export const Navbar = () => {
                   </a>
                 ))}
                 <div className="flex flex-col items-center space-y-3 pt-4">
-                  <a href="#delivery" className="w-full max-w-xs">
+                  <a href="/orders" className="w-full max-w-xs">
                     <SketchButton className="w-full">Поръчка</SketchButton>
                   </a>
                   <button
