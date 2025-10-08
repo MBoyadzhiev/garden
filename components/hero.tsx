@@ -26,40 +26,40 @@ export const Hero = () => {
         {/* Content Overlay */}
         <div className="relative z-50 h-screen flex items-center">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-0">
               {/* Text Content */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1 }}
-                className="text-white space-y-8"
+                className="text-white space-y-4 lg:space-y-8"
               >
                 {/* Logo */}
                 <div>
-                  <div className="flex justify-start mt-16">
+                  <div className="flex justify-start mt-8 lg:mt-16">
                     <Image
                       src="/logo-white-bg-cropped.png"
                       alt="Garden Bogoridi Logo"
                       width={260}
                       height={200}
-                      className="object-contain max-w-full h-auto w-48 lg:w-52 xl:w-26 2xl:w-80 2xl:h-60"
+                      className="object-contain max-w-full h-auto w-40 sm:w-48 lg:w-52 xl:w-26 2xl:w-80 2xl:h-60"
                       priority
                     />
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-lg text-gray-400 leading-relaxed max-w-md font-elegant">
+                <p className="text-base lg:text-lg text-gray-400 leading-relaxed max-w-md font-elegant">
                   Всяко ястие е история, всяка трапеза е спомен. Тук не
                   сервираме само храна - създаваме емоции и връзки, които
                   остават завинаги.
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 pt-6 items-center sm:items-start">
+                <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 pt-2 lg:pt-6 items-center sm:items-start">
                   <a href="/menu" className="w-full sm:w-auto max-w-xs">
                     <SketchButton
-                      className="w-full py-4 text-lg font-semibold"
+                      className="w-full py-3 lg:py-4 text-base lg:text-lg font-semibold"
                       style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
                     >
                       Разгледай менюто
@@ -67,7 +67,7 @@ export const Hero = () => {
                   </a>
                   <div className="w-full sm:w-auto max-w-xs">
                     <SketchButton
-                      className="w-full py-4 text-lg font-semibold"
+                      className="w-full py-3 lg:py-4 text-base lg:text-lg font-semibold"
                       style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
                     >
                       Направи резервация
@@ -93,7 +93,7 @@ export const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50"
+        className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-50"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
