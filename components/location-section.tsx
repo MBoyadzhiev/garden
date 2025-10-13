@@ -189,7 +189,7 @@ export const LocationSection = () => {
   }, []);
 
   return (
-    <section className="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-50 py-24">
+    <section className="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-50 py-24 relative z-0">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">

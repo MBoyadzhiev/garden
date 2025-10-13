@@ -1,5 +1,5 @@
 "use client";
-import { Spotlight } from "@/components/ui/spotlight-new";
+import { SparklesCore } from "@/components/ui/sparkles";
 import { SketchButton } from "@/components/ui/sketch-button";
 
 export const DeliverySection = () => {
@@ -8,16 +8,17 @@ export const DeliverySection = () => {
       id="delivery"
       className="relative bg-gradient-to-br from-gray-50 to-white py-24 overflow-hidden min-h-screen"
     >
-      <Spotlight
-        gradientFirst="radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(0, 0%, 0%, 0.15) 0, hsla(0, 0%, 0%, 0.08) 50%, hsla(0, 0%, 0%, 0) 80%)"
-        gradientSecond="radial-gradient(50% 50% at 50% 50%, hsla(0, 0%, 0%, 0.12) 0, hsla(0, 0%, 0%, 0.06) 80%, transparent 100%)"
-        gradientThird="radial-gradient(50% 50% at 50% 50%, hsla(0, 0%, 0%, 0.08) 0, hsla(0, 0%, 0%, 0.04) 80%, transparent 100%)"
-        duration={5}
-        width={900}
-        height={1300}
-        xOffset={120}
-        translateY={-200}
-      />
+      {/* Sparkles background */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <SparklesCore
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.2}
+          particleDensity={100}
+          className="w-full h-full"
+          particleColor="#D4C4B0"
+        />
+      </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">

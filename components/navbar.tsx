@@ -4,17 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SketchButton } from "@/components/ui/sketch-button";
-import { ReservationModal } from "@/components/reservation-modal";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
-
-  // Debug: Log when modal state changes
-  useEffect(() => {
-    console.log("Modal state changed:", isReservationModalOpen);
-  }, [isReservationModalOpen]);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
@@ -33,7 +26,7 @@ export const Navbar = () => {
     { name: "Меню", href: "/menu" },
     { name: "Поръчай", href: "/orders" },
     { name: "За нас", href: "#about" },
-    { name: "Кетъринг", href: "#catering" },
+    { name: "Детски кът", href: "/children" },
     // { name: "Резервации", href: "#reservations" },
     { name: "Галерия", href: "/gallery" },
   ];
@@ -111,29 +104,6 @@ export const Navbar = () => {
               <a href="/orders">
                 <SketchButton>Поръчай</SketchButton>
               </a>
-              <button
-                onClick={() => {
-                  console.log("Reservation button clicked!");
-                  setIsReservationModalOpen(true);
-                }}
-                onMouseDown={() => {
-                  console.log("Reservation button mouse down!");
-                }}
-                onMouseUp={() => {
-                  console.log("Reservation button mouse up!");
-                }}
-                className="rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200 cursor-pointer"
-                style={{
-                  pointerEvents: "auto",
-                  zIndex: 60,
-                  paddingLeft: "0.5rem",
-                  paddingRight: "0.5rem",
-                  paddingTop: "0.5rem",
-                  paddingBottom: "0.5rem",
-                }}
-              >
-                Направи резервация
-              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -194,41 +164,30 @@ export const Navbar = () => {
                   <a href="/orders" className="w-full max-w-xs">
                     <SketchButton className="w-full">Поръчка</SketchButton>
                   </a>
-                  <button
-                    onClick={() => {
-                      console.log("Mobile reservation button clicked!");
-                      setIsReservationModalOpen(true);
-                    }}
-                    onMouseDown={() => {
-                      console.log("Mobile reservation button mouse down!");
-                    }}
-                    onMouseUp={() => {
-                      console.log("Mobile reservation button mouse up!");
-                    }}
-                    className="w-full max-w-xs rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200 cursor-pointer"
-                    style={{
-                      pointerEvents: "auto",
-                      zIndex: 60,
-                      paddingLeft: "0.5rem",
-                      paddingRight: "0.5rem",
-                      paddingTop: "0.5rem",
-                      paddingBottom: "0.5rem",
-                    }}
-                  >
-                    Направи резервация
-                  </button>
                 </div>
               </div>
             </div>
           )}
         </div>
-      </nav>
 
-      {/* Reservation Modal - Outside nav to avoid z-index stacking context issues */}
-      <ReservationModal
-        isOpen={isReservationModalOpen}
-        onClose={() => setIsReservationModalOpen(false)}
-      />
+        {/* Orange Strip - Shows when scrolled */}
+        <div
+          className={`transition-all duration-300 overflow-hidden ${
+            isScrolled ? "h-7" : "h-0"
+          }`}
+        >
+          <a
+            href="/orders"
+            className="block bg-orange-500 hover:bg-orange-600 transition-colors duration-200"
+          >
+            <div className="container mx-auto px-4">
+              <p className="text-black text-center text-xs font-medium py-1.5">
+                Поръчай за вкъщи
+              </p>
+            </div>
+          </a>
+        </div>
+      </nav>
     </>
   );
 };

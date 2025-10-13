@@ -1,14 +1,10 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 import { SketchButton } from "@/components/ui/sketch-button";
 import { ImagesSlider } from "@/components/ui/images-slider";
-import { ReservationModal } from "@/components/reservation-modal";
 import { motion } from "framer-motion";
 
 export const Hero = () => {
-  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
-
   const foodImages = [
     "/restaurant/gradina.jpg",
     "/food/pasta-calamari.jpg",
@@ -69,15 +65,14 @@ export const Hero = () => {
                       Разгледай менюто
                     </SketchButton>
                   </a>
-                  <div className="w-full sm:w-auto max-w-xs">
+                  <a href="/orders" className="w-full sm:w-auto max-w-xs">
                     <SketchButton
-                      onClick={() => setIsReservationModalOpen(true)}
                       className="w-full py-3 lg:py-4 text-base lg:text-lg font-semibold"
                       style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
                     >
-                      Направи резервация
+                      Поръчай онлайн
                     </SketchButton>
-                  </div>
+                  </a>
                 </div>
               </motion.div>
 
@@ -112,12 +107,6 @@ export const Hero = () => {
           />
         </motion.div>
       </motion.div>
-
-      {/* Reservation Modal */}
-      <ReservationModal
-        isOpen={isReservationModalOpen}
-        onClose={() => setIsReservationModalOpen(false)}
-      />
     </div>
   );
 };
