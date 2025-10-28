@@ -1,12 +1,68 @@
 "use client";
-import { SparklesCore } from "@/components/ui/sparkles";
+import React, { useRef, useEffect } from "react";
+import Image from "next/image";
 import { SketchButton } from "@/components/ui/sketch-button";
+import { SparklesCore } from "@/components/ui/sparkles";
+import { motion } from "framer-motion";
 
 export const DeliverySection = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const stateRef = useRef({ mouseX: 0, mouseY: 0, tx: 0, ty: 0 });
+
+  // simple linear interpolation
+  const lerp = (a: number, b: number, n = 0.12) => a + (b - a) * n;
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const onPointer = (ev: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      // center-based coordinates - range roughly [-1, 1]
+      const cx = (ev.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+      const cy = (ev.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+      stateRef.current.mouseX = cx;
+      stateRef.current.mouseY = cy;
+    };
+
+    // touch fallback — pointer works for touch on modern browsers
+    el.addEventListener("pointermove", onPointer, { passive: true });
+
+    let rafId = 0;
+    const loop = () => {
+      const s = stateRef.current;
+      // smooth the target
+      s.tx = lerp(s.tx, s.mouseX, 0.14);
+      s.ty = lerp(s.ty, s.mouseY, 0.14);
+
+      // apply transforms to each layer element
+      const nodes = el.querySelectorAll<HTMLElement>("[data-layer]");
+      nodes.forEach((node) => {
+        const depth = Number(node.dataset.depth) || 0;
+        // depth scales how much this layer moves
+        const moveX = s.tx * (depth * 12); // px
+        const moveY = s.ty * (depth * 12);
+        // subtle rotate for depth
+        const rotY = s.tx * depth * 2;
+        const rotX = -s.ty * depth * 2;
+        node.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      });
+
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+
+    return () => {
+      el.removeEventListener("pointermove", onPointer);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
     <section
       id="delivery"
-      className="relative bg-gradient-to-br from-gray-50 to-white py-24 overflow-hidden min-h-screen"
+      className="relative py-20 px-4 bg-gray-900"
+      style={{ perspective: 1200 }}
     >
       {/* Sparkles background */}
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -14,58 +70,121 @@ export const DeliverySection = () => {
           background="transparent"
           minSize={0.6}
           maxSize={1.2}
-          particleDensity={100}
+          particleDensity={15}
           className="w-full h-full"
           particleColor="#D4C4B0"
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="space-y-8">
-            <h2 className="text-6xl font-light text-gray-900 leading-tight">
-              Доставяме до вашия дом
-            </h2>
+      {/* Main Container with Border */}
+      <div
+        ref={containerRef}
+        className="relative max-w-7xl mx-auto bg-[#F5F0E6] rounded-lg overflow-hidden z-10"
+      >
+        {/* Decorative Elements with Parallax */}
+        <div
+          data-layer
+          data-depth="2"
+          className="absolute top-4 right-4 w-16 h-16 opacity-20 will-change-transform"
+        >
+          <div className="w-full h-full bg-[#8B4545] rounded-full"></div>
+        </div>
 
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-              Насладете се на вкусовете на Garden Bogoridi в комфорта на вашия
-              дом. Свежи ястия, приготвени с любов, директно до вашата врата.
-            </p>
+        <div
+          data-layer
+          data-depth="3"
+          className="absolute bottom-4 left-4 w-12 h-12 opacity-15 will-change-transform"
+        >
+          <div className="w-full h-full bg-[#8B4545] rounded-full"></div>
+        </div>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-800 mb-2">
-                  30-45
-                </div>
-                <div className="text-gray-600">минути</div>
-              </div>
-
-              <div className="hidden sm:block w-px h-12 bg-gray-300"></div>
-
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-800 mb-2">
-                  Безплатна
-                </div>
-                <div className="text-gray-600">доставка</div>
-              </div>
-
-              <div className="hidden sm:block w-px h-12 bg-gray-300"></div>
-
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-800 mb-2">
-                  24/7
-                </div>
-                <div className="text-gray-600">поръчки</div>
-              </div>
+        {/* Content */}
+        <div className="relative z-10 flex flex-col lg:flex-row min-h-[500px]">
+          {/* Left Side - Image */}
+          <motion.div
+            className="lg:w-1/2 relative overflow-hidden"
+            initial={{ x: -100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            viewport={{ amount: 0.2 }}
+          >
+            <div
+              data-layer
+              data-depth="1"
+              className="absolute inset-0 will-change-transform"
+            >
+              <Image
+                src="/food/pasta-calamari.jpg"
+                alt="Garden Bogoridi Delivery"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
+            {/* Overlay for better text contrast if needed */}
+            <div className="absolute inset-0 bg-black/20"></div>
+          </motion.div>
 
-            <div className="pt-12">
-              <div className="text-center space-y-4">
-                <h3 className="text-2xl font-medium text-gray-800">
-                  Телефон за доставки
-                </h3>
+          {/* Right Side - Text Content */}
+          <motion.div
+            className="lg:w-1/2 p-12 flex flex-col justify-center"
+            initial={{ x: 100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeInOut", delay: 0.3 }}
+            viewport={{ amount: 0.2 }}
+          >
+            <div className="space-y-6">
+              {/* Title */}
+              <h2 className="text-4xl md:text-5xl font-elegant text-black leading-tight">
+                ДОСТАВКА ДО ДОМА
+              </h2>
+
+              {/* Subtitle */}
+              <p className="text-xl text-black font-medium">
+                Храна? Започни деня си подобаващо!
+              </p>
+
+              {/* Body Text */}
+              <div className="space-y-4 text-lg text-black leading-relaxed">
+                <p>
+                  Всяка поръчка е история, разказана с грижа и внимание към
+                  детайла. Създаваме моменти от първия аромат на прясно сготвени
+                  ястия до последната хапка.
+                </p>
+
+                <p>
+                  Нашето внимателно подбрано меню обхваща от класически
+                  български ястия до иновативни специалитети, приготвени с
+                  най-добрите продукти от цял свят.
+                </p>
+              </div>
+
+              {/* Features */}
+              <div className="grid grid-cols-3 gap-4 py-4">
+                <div className="text-center">
+                  <div className="text-2xl font-elegant text-black mb-1">
+                    30-45
+                  </div>
+                  <div className="text-sm text-black/70">минути</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-elegant text-black mb-1">
+                    Безплатна
+                  </div>
+                  <div className="text-sm text-black/70">доставка</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-elegant text-black mb-1">
+                    24/7
+                  </div>
+                  <div className="text-sm text-black/70">поръчки</div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div className="pt-4">
                 <a href="tel:+359876762053">
-                  <SketchButton className="inline-flex items-center gap-3 px-8 py-4 text-lg font-medium">
+                  <SketchButton className="inline-flex items-center gap-3">
                     <svg
                       className="w-6 h-6"
                       fill="none"
@@ -79,25 +198,12 @@ export const DeliverySection = () => {
                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                       />
                     </svg>
-                    +359 87 6762053
+                    За Garden Bogoridi доставка
                   </SketchButton>
                 </a>
               </div>
             </div>
-
-            {/* Coming Soon Card */}
-            <div className="pt-12">
-              <div className="max-w-sm mx-auto">
-                <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                  <div className="text-center">
-                    <p className="text-gray-600">
-                      Очаквайте скоро и он-лайн поръчки
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

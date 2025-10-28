@@ -52,7 +52,7 @@ export const Navbar = () => {
               {!isHomePage && (
                 <div className="w-30 h-30 flex items-center justify-center">
                   <Image
-                    src={isScrolled ? "/bogoridi-bg.png" : "/logo-white-bg.png"}
+                    src={isScrolled ? "/bogoridi-bg.svg" : "/logo-white-bg.png"}
                     alt="Garden Bogoridi Logo"
                     width={100}
                     height={100}

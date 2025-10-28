@@ -7,4 +7,5 @@ export { Footer } from "./footer";
 export { DeliverySection } from "./delivery-section";
 export { LocationSection } from "./location-section";
 export { BestsellersSection } from "./bestsellers-section";
-export { LunchBirthdayCombinedSection } from "./lunch-birthday-combined-section";
+export { BirthdaySection } from "./birthday-section";
+export { LunchSection } from "./lunch-section";

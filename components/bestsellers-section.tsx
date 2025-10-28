@@ -48,7 +48,7 @@ export function BestsellersSection() {
           background="transparent"
           minSize={0.6}
           maxSize={1.2}
-          particleDensity={100}
+          particleDensity={10}
           className="w-full h-full"
           particleColor="#D4C4B0"
         />

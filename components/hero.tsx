@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { SketchButton } from "@/components/ui/sketch-button";
 import { ImagesSlider } from "@/components/ui/images-slider";
+import { SparklesCore } from "@/components/ui/sparkles";
 import { motion } from "framer-motion";
 
 export const Hero = () => {
@@ -16,6 +17,18 @@ export const Hero = () => {
 
   return (
     <div className="h-screen relative overflow-hidden">
+      {/* Sparkles background */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <SparklesCore
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.2}
+          particleDensity={20}
+          className="w-full h-full"
+          particleColor="#D4C4B0"
+        />
+      </div>
+
       <ImagesSlider
         images={foodImages}
         className="h-full"
@@ -38,7 +51,7 @@ export const Hero = () => {
                 <div>
                   <div className="flex justify-start mt-8 lg:mt-16">
                     <Image
-                      src="/logo-white-bg-cropped.png"
+                      src="/white-no-bg-crop.png"
                       alt="Garden Bogoridi Logo"
                       width={260}
                       height={200}

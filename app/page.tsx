@@ -3,7 +3,8 @@ import { Hero } from "@/components/hero";
 import { AboutSection } from "@/components/about-section";
 import { DeliverySection } from "@/components/delivery-section";
 import { BestsellersSection } from "@/components/bestsellers-section";
-import { LunchBirthdayCombinedSection } from "@/components/lunch-birthday-combined-section";
+import { BirthdaySection } from "@/components/birthday-section";
+import { LunchSection } from "@/components/lunch-section";
 import { LocationSection } from "@/components/location-section";
 import { Footer } from "@/components/footer";
 
@@ -15,11 +16,8 @@ export default function Home() {
       <AboutSection />
       <DeliverySection />
       <BestsellersSection />
-      <div className="flex flex-col lg:flex-row gap-8 items-start justify-center w-full">
-        <div className="flex-1">
-          <LunchBirthdayCombinedSection />
-        </div>
-      </div>
+      <BirthdaySection />
+      <LunchSection />
       <LocationSection />
       <Footer />
     </div>
